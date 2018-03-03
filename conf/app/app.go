@@ -107,7 +107,7 @@ func SetupRoutes(app *macaron.Macaron) {
 			//app.Delete("/:id", handler.CurriculumDelete)
 
 			// update database
-			//app.Put("/:id", handler.CurriculumUpdate)
+			app.Put("/:id", handler.CurriculumUpdate)
 
 			// search database
 			app.Get("/:id", handler.CurriculumFind)

@@ -135,3 +135,64 @@ func CurriculumFind(ctx *context.Context) {
 		return
 	}
 }
+
+// Update na base de dados
+func CurriculumUpdate(ctx *context.Context) {
+
+	// define err
+	var err error
+
+	// mensagem json
+	var msgJson string
+
+	// byjson
+	var byteJson []byte
+
+	// Chave unica
+	Uuid := ctx.Params(":id")
+
+	// testando
+	// o Uuid
+	if Uuid != "" {
+
+		// capturando json findo da requisicao
+		// estamos pegando em bytes para ser
+		// usado no Unmarshal que recebe bytes
+		byteJson, err = ctx.Req.Body().Bytes()
+
+		if err != nil {
+			msgJson = `{"status":"error","msg":"` + err.Error() + `"}`
+			ctx.JSON(http.StatusUnauthorized, msgJson)
+			return
+		}
+
+		// fechando Req.Body
+		defer ctx.Req.Body().ReadCloser()
+
+		// del question
+		err := repo.UpCurriculum(Uuid, byteJson)
+
+		// if tudo correr bem
+		// registro foi atualizado
+		// com sucesso
+		if err == nil {
+			// Uuid
+			msgJson = `{"status":"ok","msg":"atualizado com sucesso seu Uuid: ` + Uuid + `!"}`
+			ctx.JSON(http.StatusOK, msgJson)
+
+		} else {
+
+			log.Println(err.Error())
+			msgJson = `{"status":"error","msg":"` + err.Error() + `]"}`
+			ctx.JSON(http.StatusUnauthorized, msgJson)
+			return
+		}
+
+	} else {
+		msgerror = "[QuestionsUpdate] Uuid é obrigatório!"
+		log.Println(msgerror)
+		msgJson = `{"status":"error","msg":"` + msgerror + `]"}`
+		ctx.JSON(http.StatusUnauthorized, msgJson)
+		return
+	}
+}

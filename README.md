@@ -95,7 +95,9 @@ Application entry
 
 - POST /v1/public/ping - Test API Rest
 
-- POST /v1/public/login - Logar 
+# Login User
+
+- POST /v1/user/login - Logar 
 
 # Data Base using Mongo
 
@@ -103,6 +105,7 @@ Application entry
 
 - GET /v1/curriculum/12 	- Recupera os dados do seu curriculo
 
+- PUT /v1/curriculum/1 	- Atualiza os dados do curriculo
 
 ```
 
@@ -123,11 +126,11 @@ pong
 
 ```
 
-### Example Curl - POST /v1/public/login
+### Example Curl - POST /v1/user/login
 
 ```
 
-curl -v -X POST localhost:8080/v1/public/login \
+curl -v -X POST localhost:8080/v1/user/login \
 -H "X-Key: NWUzOWU3MzY3ZDU4OWRhOWYyY2U0ZGQ1OTRhY2UyNTU=" \
 -d "user=email@server.com" \
 -d "password=1234"
