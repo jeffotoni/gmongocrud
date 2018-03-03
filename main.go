@@ -15,8 +15,8 @@ import (
 	"os"
 	"strconv"
 
-	config "github.com/jeffotoni/mercuriuscrud/conf"
-	conf "github.com/jeffotoni/mercuriuscrud/conf/app"
+	config "github.com/jeffotoni/gmongocrud/conf"
+	conf "github.com/jeffotoni/gmongocrud/conf/app"
 )
 
 // application entrypoint

@@ -12,8 +12,8 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/jeffotoni/mercuriuscrud/conf"
-	"github.com/jeffotoni/mercuriuscrud/model"
+	"github.com/jeffotoni/gmongocrud/conf"
+	"github.com/jeffotoni/gmongocrud/model"
 	uuid "github.com/satori/go.uuid"
 	bson "gopkg.in/mgo.v2/bson"
 	"log"
@@ -24,7 +24,7 @@ import (
 // fazendo um insert em um collection especifica
 // o metodo retorna o Uuid caso tenha sucesso
 // ou error caso ocorra algum imprevisto
-func Insert(namecollection string, insert model.TPesqPerguntas) (Uuid string, err error) {
+func Insert(namecollection string, insert model.TPesqCurriculum) (Uuid string, err error) {
 
 	// criando session e retorno o db do collection
 	col, err := conf.GetMongoCollection(namecollection)
@@ -173,7 +173,7 @@ func Find(namecollection, Uuid string) (jsonStr string, err error) {
 
 	// collection que sera criado
 	// para busca
-	var collection model.TPesqPerguntas
+	var collection model.TPesqCurriculum
 
 	// fazendo uma busca para buscar um registro
 	err = col.Find(bson.M{"ppr_uuid": Uuid}).Select(nil).One(&collection)
@@ -225,7 +225,7 @@ func FindAll(namecollection string) (jsonStr string, err error) {
 
 	// collection que sera criado
 	// para busca
-	var collection []model.TPesqPerguntas
+	var collection []model.TPesqCurriculum
 
 	// Find All
 	err = col.Find(nil).Sort("-start").All(&collection)

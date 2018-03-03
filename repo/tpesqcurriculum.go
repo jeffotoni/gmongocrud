@@ -11,7 +11,7 @@ package repo
 import (
 	"encoding/json"
 	"errors"
-	"github.com/jeffotoni/mercuriuscrud/model"
+	"github.com/jeffotoni/gmongocrud/model"
 	bson "gopkg.in/mgo.v2/bson"
 	"log"
 )
@@ -20,7 +20,7 @@ import (
 func AddCurriculum(byteJson []byte) (Uuid string, err error) {
 
 	// struct model data
-	var Tp model.TPesqPerguntas
+	var Tp model.TPesqCurriculum
 
 	//
 	var exist bool
@@ -135,7 +135,7 @@ func DelCurriculum(Uuid string) (err error) {
 func UpCurriculum(Uuid string, byteJson []byte) (err error) {
 
 	// struct model data
-	var Tp model.TPesqPerguntas
+	var Tp model.TPesqCurriculum
 
 	if Uuid != "" {
 

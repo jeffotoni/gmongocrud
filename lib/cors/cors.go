@@ -1,7 +1,7 @@
 package cors
 
 import (
-	"github.com/jeffotoni/mercuriuscrud/lib/context"
+	"github.com/jeffotoni/gmongocrud/lib/context"
 	"gopkg.in/macaron.v1"
 )
 

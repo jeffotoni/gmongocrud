@@ -4,7 +4,7 @@ import (
 	"github.com/go-macaron/cache"
 	_ "github.com/go-macaron/cache/memcache"
 	_ "github.com/go-macaron/cache/redis"
-	"github.com/jeffotoni/mercuriuscrud/conf"
+	"github.com/jeffotoni/gmongocrud/conf"
 )
 
 var (
@@ -12,7 +12,7 @@ var (
 	Memory = cache.Options{}
 
 	// File Option
-	File   = cache.Options{
+	File = cache.Options{
 		Adapter:       "file",
 		AdapterConfig: conf.Cfg.Section("").Key("cache_adpter_config").Value(),
 	}

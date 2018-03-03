@@ -9,8 +9,8 @@
 package handler
 
 import (
-	"github.com/jeffotoni/mercuriuscrud/lib/context"
-	"github.com/jeffotoni/mercuriuscrud/repo"
+	"github.com/jeffotoni/gmongocrud/lib/context"
+	"github.com/jeffotoni/gmongocrud/repo"
 	"log"
 	"net/http"
 	"strings"
@@ -66,7 +66,7 @@ func CurriculumCreate(ctx *context.Context) {
 			if string(byteJson) != "" {
 
 				// Criar registro no banco de dados
-				Uuid, err = repo.AddQuestion(byteJson)
+				Uuid, err = repo.AddCurriculum(byteJson)
 
 				// tratando o erro
 				if err != nil {
@@ -107,7 +107,7 @@ func CurriculumFind(ctx *context.Context) {
 
 		// para atualizacao temos o nome do collection a chave para efetuar o update e
 		// os campose que sera feita o set update
-		strJson, err := repo.GetQuestion(Uuid)
+		strJson, err := repo.GetCurriculum(Uuid)
 
 		// testando se tudo
 		// correu bem
@@ -129,34 +129,6 @@ func CurriculumFind(ctx *context.Context) {
 	} else {
 
 		msgerror = "[CurriculumFind] Uuid é obrigatorio!"
-		log.Println(msgerror)
-		msgJson = `{"status":"error","msg":"` + msgerror + `]"}`
-		ctx.JSON(http.StatusUnauthorized, msgJson)
-		return
-	}
-}
-
-// Busca Curriculum especifico na base de dados
-func CurriculumFindAll(ctx *context.Context) {
-
-	// msg json
-	var msgJson string
-
-	// para atualizacao temos o nome do collection a chave para efetuar o update e
-	// os campose que sera feita o set update
-	strJson, err := repo.GetAllQuestion()
-
-	// testando se tudo
-	// correu bem
-	if err == nil {
-
-		// Uuid
-		msgJson = `{"status":"ok","msg":"encontrado com sucesso", "data":"` + strJson + `"}`
-		// send write to client
-		ctx.JSON(http.StatusOK, msgJson)
-
-	} else {
-		msgerror = "[CurriculumFind] " + err.Error()
 		log.Println(msgerror)
 		msgJson = `{"status":"error","msg":"` + msgerror + `]"}`
 		ctx.JSON(http.StatusUnauthorized, msgJson)

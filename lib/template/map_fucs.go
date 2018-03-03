@@ -3,7 +3,7 @@ package template
 import (
 	"html/template"
 
-	"github.com/jeffotoni/mercuriuscrud/lib/context"
+	"github.com/jeffotoni/gmongocrud/lib/context"
 )
 
 // FuncMaps to view

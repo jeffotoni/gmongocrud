@@ -1,4 +1,4 @@
-# mercuriuscrud
+# gmongocrud
 
 * Responda para o endereço avaliacao.com. ( local )
 * Esse site deve responder em HTTPS e se chamado em HTTP, ser redirecionado para HTTPS. ( nativo e com nginx)
@@ -18,7 +18,7 @@ Create Database Mongo and configure
 
 $ mongo 
 
-$ use mercuriuscrud
+$ use gmongocrud
 
 $ db
 
@@ -37,7 +37,7 @@ go get -v gopkg.in/mgo.v2/bson
 
 go get -v github.com/satori/go.uuid
 
-go get -v github.com/jeffotoni/mercuriuscrud
+go get -v github.com/jeffotoni/gmongocrud
 
 ```
 

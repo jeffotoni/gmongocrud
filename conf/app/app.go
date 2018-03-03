@@ -15,12 +15,12 @@ import (
 	"github.com/go-macaron/jade"
 	"github.com/go-macaron/session"
 	"github.com/go-macaron/toolbox"
-	"github.com/jeffotoni/mercuriuscrud/conf"
-	"github.com/jeffotoni/mercuriuscrud/handler"
-	"github.com/jeffotoni/mercuriuscrud/lib/cache"
-	"github.com/jeffotoni/mercuriuscrud/lib/context"
-	"github.com/jeffotoni/mercuriuscrud/lib/cors"
-	"github.com/jeffotoni/mercuriuscrud/lib/template"
+	"github.com/jeffotoni/gmongocrud/conf"
+	"github.com/jeffotoni/gmongocrud/handler"
+	"github.com/jeffotoni/gmongocrud/lib/cache"
+	"github.com/jeffotoni/gmongocrud/lib/context"
+	"github.com/jeffotoni/gmongocrud/lib/cors"
+	"github.com/jeffotoni/gmongocrud/lib/template"
 	"gopkg.in/macaron.v1"
 )
 
@@ -82,22 +82,22 @@ func SetupRoutes(app *macaron.Macaron) {
 		// 	app.Post("/generatecredentials", handler.GetUserCredentials)
 		// })
 
-		app.Group("/public", func() {
-
-			app.Post("/ping", func() string {
-				return "pong"
-			})
-		})
-
 		app.Group("/user", func() {
 
-			app.Post("/login", func() string {
-				return "pong"
-			})
+			app.Post("/login", handler.Login)
+
+			// app.Post("/login", func() string {
+			// 	return "login ok."
+			// })
 		})
 
-		// group
-		// mongoDb
+		app.Group("/public", func() {
+
+			app.Post("/ping", handler.Ping)
+		})
+
+		// // group
+		// // mongoDb
 		app.Group("/curriculum", func() {
 
 			// add on base
@@ -115,5 +115,6 @@ func SetupRoutes(app *macaron.Macaron) {
 			// buscando na base de dados todos registros
 			// app.Get("/", handler.CurriculumFindAll)
 		})
+
 	})
 }

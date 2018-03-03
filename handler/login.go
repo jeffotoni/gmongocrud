@@ -13,8 +13,8 @@ import (
 	"net/http"
 )
 
-func Hello(ctx *context.Context) {
+func Login(ctx *context.Context) {
 
-	msgJson := `{"msg":"Hello, Handler Works!"}`
+	msgJson := `{"msg":"login..."}`
 	ctx.JSON(http.StatusOK, msgJson)
 }
