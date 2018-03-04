@@ -108,10 +108,11 @@ func SetupRoutes(app *macaron.Macaron) {
 			//app.Delete("/:id", handler.CurriculumDelete)
 
 			// update database
-			app.Put("/:id", handler.CurriculumUpdate)
+			app.Put("/:id", handler.HandlerFuncAuth(gjwt.ValidateHandler, handler.CurriculumUpdate))
 
 			// search database
-			app.Get("/:id", handler.CurriculumFind)
+			//app.Get("/:id", handler.CurriculumFind)
+			app.Get("/:id", handler.HandlerFuncAuth(gjwt.ValidateHandler, handler.CurriculumFind))
 
 			// buscando na base de dados todos registros
 			// app.Get("/", handler.CurriculumFindAll)

@@ -17,7 +17,7 @@ import (
 	uuid "github.com/satori/go.uuid"
 	bson "gopkg.in/mgo.v2/bson"
 	"log"
-	"strconv"
+	//"strconv"
 	"time"
 )
 
@@ -44,12 +44,12 @@ func Insert(namecollection string, insert model.TPesqCurriculum) (Uuid string, e
 	u1 := uuid.NewV4()
 
 	// convertendo uuid para string
-	insert.Ppr_uuid = fmt.Sprintf("%s", u1)
+	insert.Uuid = fmt.Sprintf("%s", u1)
 
 	DataNow := time.Now().Format(conf.LayoutDate)
 	HourNow := time.Now().Format(conf.LayoutHour)
 
-	insert.Ppr_datetime = DataNow + " " + HourNow
+	insert.Datetime = DataNow + " " + HourNow
 
 	// salvando na base de
 	// dados o insert do
@@ -66,7 +66,7 @@ func Insert(namecollection string, insert model.TPesqCurriculum) (Uuid string, e
 
 	// se tudo ocorreu bem
 	// retorna Uuid para o usuario
-	Uuid = string(insert.Ppr_uuid)
+	Uuid = string(insert.Uuid)
 	return
 }
 
@@ -176,7 +176,7 @@ func Find(namecollection, Uuid string) (jsonStr string, err error) {
 	var collection model.TPesqCurriculum
 
 	// fazendo uma busca para buscar um registro
-	err = col.Find(bson.M{"ppr_uuid": Uuid}).Select(nil).One(&collection)
+	err = col.Find(bson.M{"uuid": Uuid}).Select(nil).One(&collection)
 
 	// checando se
 	// tudo correu bem
@@ -189,12 +189,14 @@ func Find(namecollection, Uuid string) (jsonStr string, err error) {
 	// criando mapa para fazer json com
 	// marshal
 	mapPesq := map[string]string{
-		"ppr_cod":        strconv.Itoa(collection.Ppr_cod),
-		"ppr_ppq_cod":    strconv.Itoa(collection.Ppr_ppq_cod),
-		"ppr_per_cod":    strconv.Itoa(collection.Ppr_per_cod),
-		"ppr_ordem":      strconv.Itoa(collection.Ppr_ordem),
-		"ppr_dtcadastro": collection.Ppr_dtcadastro,
-		"ppr_dtaltera":   collection.Ppr_dtaltera,
+		"nome":       collection.Nome,
+		"cpf":        collection.Cpf,
+		"rg":         collection.Rg,
+		"idade":      collection.Idade,
+		"bio":        collection.Bio,
+		"skill":      collection.Skill,
+		"dtcadastro": collection.Dtcadastro,
+		"dtaltera":   collection.Dtaltera,
 	}
 
 	// convertendo para json

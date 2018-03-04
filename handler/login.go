@@ -50,14 +50,16 @@ func Login(ctx *context.Context) {
 
 		if token == "" || expires == "" {
 
-			jsonByte := []byte(`{"status":"error","msg":"Token error generating!"}`)
+			jsonString := `{"status":"error","msg":"Token error generating!"}`
+			//jsonByte := []byte()
 
 			//w.WriteHeader(http.StatusOK)
 			ctx.Resp.WriteHeader(http.StatusOK)
 
 			//w.Header().Set("Content-Type", "application/json")
 			ctx.Resp.Header().Set("Content-Type", "application/json")
-			ctx.Resp.Write(jsonByte)
+			//ctx.Resp.Write(jsonByte)
+			ctx.JSON(http.StatusOK, jsonString)
 			//w.Write(jsonByte)
 
 		} else {

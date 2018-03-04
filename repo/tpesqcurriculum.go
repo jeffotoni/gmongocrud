@@ -38,33 +38,33 @@ func AddCurriculum(byteJson []byte) (Uuid string, err error) {
 		// campos obrigatorios
 		//
 
-		if Tp.Ppr_ordem <= 0 {
-			msgerror = "[AddCurriculum] Erro A coluna ppr_ordem obrigatoria!"
+		if Tp.Nome == "" {
+			msgerror = "[AddCurriculum] Erro A coluna nome obrigatoria!"
 			err = errors.New(msgerror)
 			log.Println(msgerror)
 			return
-		} else if Tp.Ppr_per_cod <= 0 {
-			msgerror = "[AddCurriculum] Erro A coluna Ppr_per_cod obrigatoria!"
+		} else if Tp.Cpf == "" { // campo obrigatorio string
+			msgerror = "[AddCurriculum] Erro A coluna CPF obrigatoria!"
 			err = errors.New(msgerror)
 			log.Println(msgerror)
 			return
-		} else if Tp.Ppr_cod <= 0 {
-			msgerror = "[AddCurriculum] Erro A coluna Ppr_cod obrigatoria!"
+		} else if Tp.Rg == "" { // campo obrigatorio string
+			msgerror = "[AddCurriculum] Erro A coluna Rg obrigatoria!"
 			err = errors.New(msgerror)
 			log.Println(msgerror)
 			return
-		} else if Tp.Ppr_ppq_cod <= 0 {
-			msgerror = "[AddCurriculum] Erro A coluna Ppr_ppq_cod obrigatoria!"
+		} else if Tp.Idade == "" { // campo obrigatorio string
+			msgerror = "[AddCurriculum] Erro A coluna Idade obrigatoria!"
 			err = errors.New(msgerror)
 			log.Println(msgerror)
 			return
-		} else if Tp.Ppr_dtcadastro == "" {
-			msgerror = "[AddCurriculum] Erro A coluna Ppr_dtcadastro obrigatoria!"
+		} else if Tp.Bio == "" { // campo obrigatorio string
+			msgerror = "[AddCurriculum] Erro A coluna Bio obrigatoria!"
 			err = errors.New(msgerror)
 			log.Println(msgerror)
 			return
-		} else if Tp.Ppr_dtaltera == "" { // campo obrigatorio string
-			msgerror = "[AddCurriculum] Erro A coluna Ppr_dtaltera obrigatoria!"
+		} else if Tp.Skill == "" { // campo obrigatorio string
+			msgerror = "[AddCurriculum] Erro A coluna Skilll obrigatoria!"
 			err = errors.New(msgerror)
 			log.Println(msgerror)
 			return
@@ -72,7 +72,7 @@ func AddCurriculum(byteJson []byte) (Uuid string, err error) {
 
 			// validar se existe o dado no banco
 			// if exist o dado no mongo nao faca
-			exist, err = FindExist(tpep_collection, bson.M{"ppr_cod": Tp.Ppr_cod})
+			exist, err = FindExist(tpep_collection, bson.M{"cpf": Tp.Cpf})
 
 			// validar
 			if err != nil {
@@ -147,13 +147,14 @@ func UpCurriculum(Uuid string, byteJson []byte) (err error) {
 		}
 
 		// chave para fazer update
-		KeyUp := bson.M{"ppr_uuid": Uuid}
+		KeyUp := bson.M{"uuid": Uuid}
 
 		// campos a serem realizado o update
-		SetFields := bson.M{"$set": bson.M{"ppr_cod": Tp.Ppr_cod,
-			"ppr_ppq_cod": Tp.Ppr_ppq_cod, "ppr_per_cod": Tp.Ppr_per_cod,
-			"ppr_ordem": Tp.Ppr_ordem, "ppr_dtcadastro": Tp.Ppr_dtcadastro,
-			"ppr_dtaltera": Tp.Ppr_dtaltera,
+		SetFields := bson.M{"$set": bson.M{"nome": Tp.Nome,
+			"cpf": Tp.Cpf, "rg": Tp.Rg,
+			"idade": Tp.Idade, "bio": Tp.Bio,
+			"skill":     Tp.Skill,
+			"pdtaltera": Tp.Dtaltera,
 		}}
 
 		// para atualizacao temos o nome do collection a chave para efetuar o update e

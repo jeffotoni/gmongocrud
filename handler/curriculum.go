@@ -58,6 +58,7 @@ func CurriculumCreate(ctx *context.Context) {
 			msgJson = `{"status":"error","msg":"` + msgerror + `}`
 			ctx.JSON(http.StatusUnauthorized, msgJson)
 			return
+
 		} else {
 
 			// se nao tiver nem um valor
@@ -87,10 +88,30 @@ func CurriculumCreate(ctx *context.Context) {
 			}
 		} // fim else
 	} else {
-		log.Println("[CurriculumCreate] Erro Content-Type: aceitamos somente " + cTypeAceito)
-		msgJson = `{"status":"error","msg":"error no Content-Type: ` + cType + `, aceitamos somente [Content-Type: ` + cTypeAceito + `]"}`
-		ctx.JSON(http.StatusUnauthorized, msgJson)
-		return
+
+		vetCot := strings.Split(cType, ";")
+		Content := strings.ToLower(strings.TrimSpace(vetCot[0]))
+
+		if Content == "multipart/form-data" {
+
+			log.Println("teste nome:: ", ctx.Req.Form.Get("nome"))
+			log.Println("teste cpf:: ", ctx.Req.Form.Get("cpf"))
+
+			Uuid := "$0001"
+
+			// f, he, errorr := ctx.Req.FormFile("file")
+			ctx.SaveToFile("file", "./upload/"+Uuid)
+
+			msgJson = `{"status":"ok","msg":"seus dados foram cadastrados com sucesso!", "uuid":"` + Uuid + `"}`
+			ctx.JSON(http.StatusOK, msgJson)
+
+		} else {
+
+			log.Println("[CurriculumCreate] Erro Content-Type: aceitamos somente " + cTypeAceito)
+			msgJson = `{"status":"error","msg":"error no Content-Type: ` + cType + `, aceitamos somente [Content-Type: ` + cTypeAceito + `]"}`
+			ctx.JSON(http.StatusUnauthorized, msgJson)
+			return
+		}
 	}
 }
 

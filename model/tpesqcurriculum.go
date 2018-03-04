@@ -10,12 +10,14 @@ package model
 
 // struct TPesqPerguntas
 type TPesqCurriculum struct {
-	Ppr_uuid       string `json:"ppr_uid"`
-	Ppr_cod        int    `json:"ppr_cod"`
-	Ppr_ppq_cod    int    `json:"ppr_ppq_cod"`
-	Ppr_per_cod    int    `json:"ppr_per_cod"`
-	Ppr_ordem      int    `json:"ppr_ordem"`
-	Ppr_dtcadastro string `json:"ppr_dtcadastro"`
-	Ppr_dtaltera   string `json:"ppr_dtaltera"`
-	Ppr_datetime   string `json:"ppr_datetime"`
+	Uuid       string `json:"uid"`
+	Nome       string `json:"nome"`
+	Cpf        string `json:"cpf"`
+	Rg         string `json:"rg"`
+	Idade      string `json:"idade"`
+	Skill      string `json:"skill"`
+	Bio        string `json:"bio"`
+	Datetime   string `json:"datetime"`
+	Dtcadastro string `json:"dtcadastro"`
+	Dtaltera   string `json:"dtaltera"`
 }
