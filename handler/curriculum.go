@@ -9,6 +9,7 @@
 package handler
 
 import (
+	"github.com/jeffotoni/gmongocrud/conf"
 	"github.com/jeffotoni/gmongocrud/lib/context"
 	"github.com/jeffotoni/gmongocrud/repo"
 	"log"
@@ -97,13 +98,39 @@ func CurriculumCreate(ctx *context.Context) {
 			log.Println("teste nome:: ", ctx.Req.Form.Get("nome"))
 			log.Println("teste cpf:: ", ctx.Req.Form.Get("cpf"))
 
-			Uuid := "$0001"
+			jsonl := `{` +
+				`"nome":"` + ctx.Req.Form.Get("nome") + `",` +
+				`"cpf":"` + ctx.Req.Form.Get("cpf") + `",` +
+				`"rg":"` + ctx.Req.Form.Get("rg") + `",` +
+				`"idade":"` + ctx.Req.Form.Get("idade") + `",` +
+				`"bio":"` + ctx.Req.Form.Get("bio") + `",` +
+				`"skill":"` + ctx.Req.Form.Get("skill") + `"` + `}`
 
-			// f, he, errorr := ctx.Req.FormFile("file")
-			ctx.SaveToFile("file", "./upload/"+Uuid)
+			// log.Println(jsonl)
 
-			msgJson = `{"status":"ok","msg":"seus dados foram cadastrados com sucesso!", "uuid":"` + Uuid + `"}`
-			ctx.JSON(http.StatusOK, msgJson)
+			byteJson := []byte(jsonl)
+
+			// adicionado curriculo
+			Uuid, err = repo.AddCurriculum(byteJson)
+
+			// tratando o erro
+			if err != nil {
+				log.Println(err.Error())
+				msgJson = `{"status":"error","msg":"` + err.Error() + `"}`
+				ctx.JSON(http.StatusUnauthorized, msgJson)
+				return
+			} else {
+
+				// path upload
+				pathUpload := "./" + conf.PATH_UPLOAD + "/" + Uuid
+
+				// salvando arquivo em disco
+				ctx.SaveToFile(conf.NAME_FORM_FILE, pathUpload)
+
+				// sucesso
+				msgJson = `{"status":"ok","msg":"seus dados foram cadastrados com sucesso!", "uuid":"` + Uuid + `"}`
+				ctx.JSON(http.StatusOK, msgJson)
+			}
 
 		} else {
 
