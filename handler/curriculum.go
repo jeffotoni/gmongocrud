@@ -11,6 +11,7 @@ package handler
 import (
 	"github.com/jeffotoni/gmongocrud/conf"
 	"github.com/jeffotoni/gmongocrud/lib/context"
+	"github.com/jeffotoni/gmongocrud/lib/upload"
 	"github.com/jeffotoni/gmongocrud/repo"
 	"log"
 	"net/http"
@@ -95,8 +96,25 @@ func CurriculumCreate(ctx *context.Context) {
 
 		if Content == "multipart/form-data" {
 
-			log.Println("teste nome:: ", ctx.Req.Form.Get("nome"))
-			log.Println("teste cpf:: ", ctx.Req.Form.Get("cpf"))
+			//log.Println("teste nome:: ", ctx.Req.Form.Get("nome"))
+			//log.Println("teste cpf:: ", ctx.Req.Form.Get("cpf"))
+
+			_, fh, err := ctx.GetFile(conf.NAME_FORM_FILE)
+
+			fi := &upload.FileInfo{
+				Size: fh.Size,
+				Name: fh.Filename,
+				Type: fh.Header.Get("Content-Type"),
+			}
+
+			if !fi.ValidateSize() {
+
+				msgTmp := "size not allowed!"
+				msgJson := `{"status":"error","msg":"` + msgTmp + `"}`
+
+				ctx.JSON(http.StatusUnauthorized, msgJson)
+				return
+			}
 
 			jsonl := `{` +
 				`"nome":"` + ctx.Req.Form.Get("nome") + `",` +

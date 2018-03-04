@@ -185,7 +185,7 @@ func UpCurriculum(Uuid string, byteJson []byte) (err error) {
 // Buscando Curriculum especifico
 func GetCurriculum(Uuid string) (strJson string, err error) {
 
-	// para atualizacao temos o nome do collection a chave para efetuar o update e
+	// para atualizacao temos o nome do collection a chave para efetuar a busca
 	// os campose que sera feita o set update
 	strJson, err = Find(tpep_collection, Uuid)
 
@@ -202,7 +202,7 @@ func GetCurriculum(Uuid string) (strJson string, err error) {
 // Buscando Curriculum especifico
 func GetAllCurriculum() (strJson string, err error) {
 
-	// para atualizacao temos o nome do collection a chave para efetuar o update e
+	// para atualizacao temos o nome do collection a chave para efetuar a busca
 	// os campose que sera feita o set update
 	strJson, err = FindAll(tpep_collection)
 

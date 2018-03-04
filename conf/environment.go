@@ -14,3 +14,4 @@ const LayoutDate = "2006-01-02"
 const LayoutHour = "15:04:05"
 const PATH_UPLOAD = "upload"
 const NAME_FORM_FILE = "file" // o nome do campo no formulario  html=> <type=file name="file" id="file", curl => --form "file=@xxxx.pdf"
+const MAX_UPLOAD = 5000000    // 5mb
