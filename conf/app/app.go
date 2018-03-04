@@ -35,7 +35,19 @@ func SetupMiddlewares(app *macaron.Macaron) {
 			new(handler.AppChecker),
 		},
 	}))
-	app.Use(macaron.Static("public"))
+	app.Use(macaron.Static("docapi",
+		macaron.StaticOptions{
+			// Prefix is the optional prefix used to serve the static directory content. Default is empty string.
+			Prefix: "docapi",
+			// SkipLogging will disable [Static] log messages when a static file is served. Default is false.
+			SkipLogging: true,
+			// IndexFile defines which file to serve as index if it exists. Default is "index.html".
+			IndexFile: "index.html",
+			// Expires defines which user-defined function to use for producing a HTTP Expires Header. Default is nil.
+			// https://developers.google.com/speed/docs/insights/LeverageBrowserCaching
+			Expires: func() string { return "max-age=0" },
+		}))
+
 	app.Use(i18n.I18n(i18n.Options{
 		Directory: "locale",
 		Langs:     []string{"pt-BR", "en-US"},
