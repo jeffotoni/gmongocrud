@@ -113,7 +113,7 @@ Application entry
 
 ```
 
-curl -X POST localhost:8080/v1/public/ping
+curl -X POST localhost:8181/v1/public/ping
 
 ```
 
@@ -130,10 +130,22 @@ pong
 
 ```
 
-curl -v -X POST localhost:8080/v1/user/login \
+curl -v -X POST localhost:8181/v1/user/login \
 -H "X-Key: NWUzOWU3MzY3ZDU4OWRhOWYyY2U0ZGQ1OTRhY2UyNTU=" \
 -d "user=email@server.com" \
 -d "password=1234"
+
+```
+
+# Resposta
+
+```
+{
+	"status":"o",
+	"msg":"success",
+	"token":"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiamVmZi5vdG9uaSIsInVpZCI6IjEyMzQ1NjkzOSIsInVpZHdrcyI6IjM4MzgzODM4MzM4ODMiLCJleHAiOjE1MjEwNDg4NTMsImlzcyI6Imp3dCBwcm9qZWN0In0.wo9fJ0CxBfDlZkwrJql8_3Vjzup1xJhDwYaGxTQbmyug80HPO8uRkvng8ZUKG95hL-ldZCYOe_sdkz2wb7wGcM-8mzFJpRqqgcJeyHBIjSDd4xHQPDyzKF4wZwQ7EgR6C_pUSmnvYRHOcT-FEK8gnqydl8BK0ZvcwWg3zYO7rc8",
+	"expires":"14009-09-14"
+}
 
 ```
 
@@ -141,8 +153,9 @@ curl -v -X POST localhost:8080/v1/user/login \
 
 ```
 
-curl -v -X POST localhost:8080/v1/curriculum \
+curl -v -X POST localhost:8181/v1/curriculum \
 -H "Content-Type: application/json" \
+-H "Authorization: Bearer xxxxxxxxxxxxxxx" \
 -d @curriculums.json
 
 ```
@@ -150,9 +163,26 @@ curl -v -X POST localhost:8080/v1/curriculum \
 
 ```
 
-curl -X POST localhost:8080/v1/curriculum \
+curl -X POST localhost:8181/v1/curriculum \
 -H "Content-Type: application/json" \
+-H "Authorization: Bearer xxxxxxxxxxxxxxx" \
 -d '{"nome":"nome aqui","cpf":"xxxx-xxxxx","rg":"xxx.xxx","idade":"xx.xx.xx","bio":"xxxxx.xxx..xx","skill":"xxx.xx.x.xx.x"}'
+
+```
+
+### Example Curl Upload File - POST /v1/curriculum
+
+```
+
+curl -v -X POST localhost:8181/v1/curriculum \
+-H "Authorization: Bearer xxxxxxxxxxxxxxx" \
+--form "nome=seu nome" \
+--form "cpf=xx.xxx.xxx-xx" \ 
+-F "rg=xxxxxx" \
+-F "idade=xx/xx/xxxx" \
+-F "bio=Seu Bio aqui" \
+-F "skill=Seu Skill aqui" \
+-F "file=@seucurriculo.pdf"
 
 ```
 
@@ -174,7 +204,8 @@ A successful request returns the HTTP 200 OK status code and a JSON response bod
 
 ```
 
-curl -X GET localhost:8080/v1/curriculum/1235
+curl -X GET localhost:8181/v1/curriculum/1235 \
+-H "Authorization: Bearer xxxxxxxxxxxxxxx"
 
 ```
 
@@ -199,3 +230,25 @@ A successful request returns the HTTP 200 OK status code and a JSON response bod
 }
 
 ```
+
+### Example Curl - PUT /v1/curriculum/1234
+
+```
+
+curl -X PUT localhost:8181/v1/curriculum/1234
+-H "Content-Type: application/json" \
+-H "Authorization: Bearer xxxxxxxxxxxxxxx" \
+-d @curriculums-update.json
+
+```
+
+### Sample Response
+
+A successful request returns the HTTP 200 OK status code and a JSON response body.
+
+```
+
+{"status":"ok","msg":"Atualizado com sucesso!"}
+
+```
+
