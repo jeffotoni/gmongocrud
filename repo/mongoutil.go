@@ -267,5 +267,5 @@ func FindAll(namecollection string) (jsonStr string, err error) {
 
 func MongoAuthUser(user, password string) (iduser, idworks string) {
 
-	return
+	return "123456939", "3838383833883"
 }

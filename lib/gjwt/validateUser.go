@@ -39,12 +39,7 @@ func ValidateUser(ctx *context.Context) (bool, string, string, string) {
 	// just scape
 	fmt.Sprint("%v", Password)
 
-	//
-	//
-	//
 	typeHeader := ValidHeader(ctx)
-
-	// fmt.Println(typeHeader)
 
 	//
 	//
@@ -88,10 +83,6 @@ func ValidateUser(ctx *context.Context) (bool, string, string, string) {
 		return false, `{"status":"error","msg":"Invalid Content-Type"}`, "", ""
 	}
 
-	// Password2 := fmt.Sprintf("%s", Password)
-	//
-	//
-	//
 	Password2 = strings.TrimSpace(strings.Trim(Password2, " "))
 
 	//
@@ -151,9 +142,6 @@ func ValidHeader(ctx *context.Context) string {
 	// Accept
 	//
 	contentType := ctx.Req.Header.Get("Content-Type")
-
-	////
-	fmt.Println(contentType)
 
 	tmpContent := strings.ToLower(strings.TrimSpace(contentType))
 	tmpContentV := strings.Split(tmpContent, ";")

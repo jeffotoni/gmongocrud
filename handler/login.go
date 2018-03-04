@@ -29,6 +29,8 @@ func Login(ctx *context.Context) {
 
 	ok, emailUser, uidUser, uidWks := gjwt.ValidateUser(ctx)
 
+	//log.Println("ok: ", ok)
+
 	if ok {
 
 		// do it now
@@ -61,17 +63,20 @@ func Login(ctx *context.Context) {
 		} else {
 
 			//send email emailUser
-
 			// write client
 			TokenLocal = token
 			statusOk = true
 
-			jsonByte := []byte(`{"status":"ok","msg":"success","token":"` + token + `","expires":"` + expires + `"}`)
+			jsonString := `{"status":"ok","msg":"success","token":"` + token + `","expires":"` + expires + `"}`
+
+			//jsonByte := []byte(msgJsonx)
 
 			//w.WriteHeader(http.StatusOK)
 			ctx.Resp.WriteHeader(http.StatusOK)
 			ctx.Resp.Header().Set("Content-Type", "application/json")
-			ctx.Resp.Write(jsonByte)
+			//ctx.Resp.Write(jsonByte)
+			ctx.JSON(http.StatusOK, jsonString)
+
 			//w.Header().Set("Content-Type", "application/json")
 			//w.Write(jsonByte)
 		}
@@ -80,7 +85,7 @@ func Login(ctx *context.Context) {
 
 		// Can contain a json as a message when
 		// it gives some kind of error
-		jsonByte := []byte(emailUser)
+		//jsonByte := []byte(emailUser)
 
 		//w.WriteHeader(http.StatusOK)
 		//w.Header().Set("Content-Type", "application/json")
@@ -88,7 +93,8 @@ func Login(ctx *context.Context) {
 
 		ctx.Resp.WriteHeader(http.StatusOK)
 		ctx.Resp.Header().Set("Content-Type", "application/json")
-		ctx.Resp.Write(jsonByte)
+		//ctx.Resp.Write(jsonByte)
+		ctx.JSON(http.StatusOK, emailUser)
 	}
 
 	//
