@@ -10,11 +10,102 @@ package handler
 
 import (
 	"github.com/jeffotoni/gmongocrud/lib/context"
+	"github.com/jeffotoni/gmongocrud/lib/gjwt"
+	"github.com/jeffotoni/gmongocrud/lib/models"
+	"log"
 	"net/http"
+	"time"
 )
 
+// Testing whether the service is online
+//
 func Login(ctx *context.Context) {
 
-	msgJson := `{"msg":"login..."}`
-	ctx.JSON(http.StatusOK, msgJson)
+	TokenLocal := ""
+
+	t1 := time.Now()
+
+	statusOk := false
+
+	ok, emailUser, uidUser, uidWks := gjwt.ValidateUser(ctx)
+
+	if ok {
+
+		// do it now
+		var model models.User
+
+		model.Login = emailUser
+
+		model.Uid = uidUser
+
+		model.Uidwks = uidWks
+
+		model.Password = ""
+
+		model.Role = "user-default"
+
+		token, expires := gjwt.GenerateJWT(model)
+
+		if token == "" || expires == "" {
+
+			jsonByte := []byte(`{"status":"error","msg":"Token error generating!"}`)
+
+			//w.WriteHeader(http.StatusOK)
+			ctx.Resp.WriteHeader(http.StatusOK)
+
+			//w.Header().Set("Content-Type", "application/json")
+			ctx.Resp.Header().Set("Content-Type", "application/json")
+			ctx.Resp.Write(jsonByte)
+			//w.Write(jsonByte)
+
+		} else {
+
+			//send email emailUser
+
+			// write client
+			TokenLocal = token
+			statusOk = true
+
+			jsonByte := []byte(`{"status":"ok","msg":"success","token":"` + token + `","expires":"` + expires + `"}`)
+
+			//w.WriteHeader(http.StatusOK)
+			ctx.Resp.WriteHeader(http.StatusOK)
+			ctx.Resp.Header().Set("Content-Type", "application/json")
+			ctx.Resp.Write(jsonByte)
+			//w.Header().Set("Content-Type", "application/json")
+			//w.Write(jsonByte)
+		}
+
+	} else {
+
+		// Can contain a json as a message when
+		// it gives some kind of error
+		jsonByte := []byte(emailUser)
+
+		//w.WriteHeader(http.StatusOK)
+		//w.Header().Set("Content-Type", "application/json")
+		//w.Write(jsonByte)
+
+		ctx.Resp.WriteHeader(http.StatusOK)
+		ctx.Resp.Header().Set("Content-Type", "application/json")
+		ctx.Resp.Write(jsonByte)
+	}
+
+	//
+	//
+	//
+	t2 := time.Now()
+
+	if statusOk {
+
+		msg := "login success"
+		//LogHandlerLoginOn(w, r, msg, t1, t2, TokenLocal)
+		log.Println(msg, t1, t2, TokenLocal)
+
+	} else {
+
+		msg := "Error while trying to login"
+		log.Println(msg, t1, t2, TokenLocal)
+		//LogHandlerOff(w, r, msg, t1, t2)
+	}
 }

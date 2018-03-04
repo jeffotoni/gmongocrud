@@ -264,3 +264,8 @@ func FindAll(namecollection string) (jsonStr string, err error) {
 	jsonStr = string(jsonPesq)
 	return
 }
+
+func MongoAuthUser(user, password string) (iduser, idworks string) {
+
+	return
+}

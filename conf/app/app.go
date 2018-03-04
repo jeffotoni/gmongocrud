@@ -20,6 +20,7 @@ import (
 	"github.com/jeffotoni/gmongocrud/lib/cache"
 	"github.com/jeffotoni/gmongocrud/lib/context"
 	"github.com/jeffotoni/gmongocrud/lib/cors"
+	"github.com/jeffotoni/gmongocrud/lib/gjwt"
 	"github.com/jeffotoni/gmongocrud/lib/template"
 	"gopkg.in/macaron.v1"
 )
@@ -101,7 +102,7 @@ func SetupRoutes(app *macaron.Macaron) {
 		app.Group("/curriculum", func() {
 
 			// add on base
-			app.Post("/", handler.CurriculumCreate)
+			app.Post("/", handler.HandlerFuncAuth(gjwt.AuthBasicJwt, handler.CurriculumCreate))
 
 			// delete database
 			//app.Delete("/:id", handler.CurriculumDelete)
