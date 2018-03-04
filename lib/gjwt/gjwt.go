@@ -472,7 +472,6 @@ func GetXKey(ctx *context.Context) string {
 	//
 	tokenUserDecode, _ := b64.StdEncoding.DecodeString(tokenBase64)
 
-	//
 	// User, Login string
 	//
 	tokenUserDecodeS := strings.TrimSpace(strings.Trim(string(tokenUserDecode), " "))
@@ -536,6 +535,8 @@ func GetXKeyUrl(ctx *context.Context) string {
 func AuthBasicKey(ctx *context.Context) bool {
 
 	tokenUserDecodeS := GetXKey(ctx)
+
+	fmt.Println("token: ", tokenUserDecodeS)
 
 	//
 	// Validate user and password in the database

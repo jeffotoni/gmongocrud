@@ -102,7 +102,7 @@ func SetupRoutes(app *macaron.Macaron) {
 		app.Group("/curriculum", func() {
 
 			// add on base
-			app.Post("/", handler.HandlerFuncAuth(gjwt.AuthBasicJwt, handler.CurriculumCreate))
+			app.Post("/", handler.HandlerFuncAuth(gjwt.ValidateHandler, handler.CurriculumCreate))
 
 			// delete database
 			//app.Delete("/:id", handler.CurriculumDelete)
