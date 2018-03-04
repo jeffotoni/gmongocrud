@@ -44,7 +44,7 @@ func ValidateUser(ctx *context.Context) (bool, string, string, string) {
 	//
 	typeHeader := ValidHeader(ctx)
 
-	//fmt.Println(typeHeader)
+	// fmt.Println(typeHeader)
 
 	//
 	//
@@ -56,12 +56,22 @@ func ValidateUser(ctx *context.Context) (bool, string, string, string) {
 		//
 
 		data, _ := ctx.Req.Body().Bytes()
+		//fmt.Print(data)
 
-		fmt.Println("json")
-		fmt.Print(data)
+		var L UserValid
 
-		Email = "jeff@gmail.com"
-		Password := "1234"
+		//
+		//
+		//
+		err := json.Unmarshal(data, &L)
+
+		if err != nil {
+
+			return false, `{"status":"error","msg":"Json did not work: ` + fmt.Sprintf("%s", err) + `"}`, "", ""
+		}
+
+		Email = L.Email
+		Password := L.Password
 		Password2 = fmt.Sprintf("%s", Password)
 
 	} else if typeHeader == "FORM" {
