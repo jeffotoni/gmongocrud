@@ -1,0 +1,53 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Swagger UI</title>
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Source+Code+Pro:300,600|Titillium+Web:400,600,700" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/3.2.2/swagger-ui.css" >
+  <style>
+    html
+    {
+      box-sizing: border-box;
+      overflow: -moz-scrollbars-vertical;
+      overflow-y: scroll;
+    }
+    *,
+    *:before,
+    *:after
+    {
+      box-sizing: inherit;
+    }
+    body {
+      margin:0;
+      background: #fafafa;
+    }
+  </style>
+</head>
+<body>
+<div id="swagger-ui"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/3.2.2/swagger-ui-bundle.js"> </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/3.2.2/swagger-ui-standalone-preset.js"> </script>
+<script>
+window.onload = function() {
+  var spec = {"info": {"termsOfService": "http://avaliacao.com/", "version": "0.0.1", "title": "Avaliacao - The API", "description": "Avaliacao, descricao colocar aqui", "contact": {"email": "jeff.otoni@s3wf.com.br"}}, "paths": {"/curriculum/id": {"put": {"responses": {"200": {"description": "success", "schema": {"items": {"$ref": "#/definitions/Curriculum"}, "type": "string"}}, "401": {"$ref": "#/responses/Standard401ErrorResponse"}, "500": {"$ref": "#/responses/Standard500ErrorResponse"}}, "parameters": [{"in": "header", "description": "Header Authorization: Bearer", "format": "string", "required": true, "type": "string", "name": "Authorization: Bearer {tokem}"}, {"in": "query", "description": "Uuid do candidato", "format": "string", "required": true, "type": "string", "name": "id"}], "produces": ["application/json"], "description": "curl -X GET avaliacao.com/v1/curriculum/24ccc9e3-1a88-4955-9b5f-67167a76e159 -H \"Authorization: Bearer {token} -d @curriculums-update.json", "tags": ["curriculum"], "summary": "Atualizando seu curriculo."}}, "/curriculum/:id": {"get": {"responses": {"200": {"description": "success", "schema": {"items": {"$ref": "#/definitions/Curriculum"}, "type": "string"}}, "401": {"$ref": "#/responses/Standard401ErrorResponse"}, "500": {"$ref": "#/responses/Standard500ErrorResponse"}}, "parameters": [{"in": "header", "description": "Header Authorization: Bearer", "format": "string", "required": true, "type": "string", "name": "Authorization: Bearer {tokem}"}, {"in": "query", "description": "Uuid do candidato", "format": "string", "required": true, "type": "string", "name": "id"}], "produces": ["application/json"], "description": "curl -X GET avaliacao.com/v1/curriculum/24ccc9e3-1a88-4955-9b5f-67167a76e159 -H \"Authorization: Bearer {token}", "tags": ["curriculum"], "summary": "Listando os dados de seu curriculo."}}, "/user": {"post": {"responses": {"200": {"description": "{\"status\":\"ok\",\"msg\":\"success\",\"name\":\"avaliacao\",\"token\":\"xxxxxxxxx\", \"expires\":\"14009-09-14\"}", "schema": {"items": {"$ref": "#/definitions/User"}, "type": "array"}}, "401": {"$ref": "#/responses/Standard401ErrorResponse"}, "500": {"$ref": "#/responses/Standard500ErrorResponse"}}, "parameters": [{"in": "header", "description": "access key to public api", "format": "string", "required": true, "type": "string", "name": "X-Key"}, {"in": "query", "description": "name user", "format": "string", "required": true, "type": "string", "name": "user"}], "produces": ["application/json"], "description": "curl -X POST api.avaliacao.com/v1/user/token -H \"Content-Type: application/json\" -H \"X-Key: {xxx}\" -d user=avaliacao", "tags": ["token"], "summary": "Solicitando Token JWT para acessar os metodos"}}, "/curriculum": {"post": {"responses": {"200": {"description": "{\"status\":\"ok\",\"msg\":\"curriculo cadastrado com sucesso.\", \"id\":\"uuid\"}", "schema": {"items": {"$ref": "#/definitions/Curriculum"}, "type": "array"}}, "401": {"$ref": "#/responses/Standard401ErrorResponse"}, "500": {"$ref": "#/responses/Standard500ErrorResponse"}}, "parameters": [{"in": "header", "description": "Header Authorization: Bearer", "format": "string", "required": true, "type": "string", "name": "Authorization: Bearer {tokem}"}, {"in": "query", "description": "nome candidato", "format": "string", "required": true, "type": "string", "name": "nome"}, {"in": "query", "description": "cpf candidato", "format": "string", "required": true, "type": "string", "name": "cpf"}, {"in": "query", "description": "rg candidato", "format": "string", "required": true, "type": "string", "name": "rg"}, {"in": "query", "description": "Idade candidato", "format": "date", "required": true, "type": "string", "name": "idade"}, {"in": "query", "description": "Bio candidato", "format": "string", "required": true, "type": "string", "name": "bio"}, {"in": "query", "description": "Skill candidato", "format": "string", "required": true, "type": "string", "name": "skill"}, {"in": "query", "description": "field of input form data", "format": "binary", "required": true, "type": "string", "name": "file"}], "produces": ["multipart/form-data"], "description": "curl -X POST api.avaliacao.com/v1/curriculum -H \"Authorization: Bearer {token}\" --form \"nome=seunome\" --form \"cpf=xx.xxx.xxx-xx\" --form \"file=@curriculo.pdf\"", "tags": ["curriculum"], "summary": "O endpoint \u00e9 respons\u00e1vel por criar seu curriculo, recebe um formulario no formato application/json ou multipart/form-data onde poder\u00e1 enviar pdf do seu curriculo"}}, "/public/ping": {"post": {"description": "curl -X POST api.avaliacao.com/v1/public/ping", "summary": "The method is public and open does not need authentication, to know if the service is online", "responses": {"200": {"description": "pong", "schema": {"items": {"$ref": "#/definitions/public"}, "type": "string"}}, "404": {"$ref": "#/responses/Standard404ErrorResponse"}, "500": {"$ref": "#/responses/Standard500ErrorResponse"}}, "tags": ["public"], "produces": ["text/plain"]}}}, "schemes": ["http", "https"], "responses": {"Standard500ErrorResponse": {"description": "Error of server"}, "Standard404ErrorResponse": {"description": "Not found"}, "Standard401ErrorResponse": {"description": "Access Token invalid."}}, "tags": [{"name": "public", "description": "Metodo para gerar Token"}, {"name": "user/token", "description": "Metodo responsavel por retornar token para que possa utilizar os seus endpoints."}, {"name": "curriculum", "description": "Metodo respons\u00e1vel por cadastrar seu curriculo, listar e atualizar"}], "basePath": "/v1", "host": "api.avaliacao.com", "definitions": {"Curriculum": {"type": "object", "properties": {"status": {"type": "string", "description": "reply message", "format": "string"}, "msg": {"type": "string", "description": "reply message", "format": "string"}, "name": {"type": "string", "description": "reply message", "format": "string"}}}, "public": {"type": "object", "properties": {"msg": {"type": "string"}}}, "User": {"type": "object", "properties": {"status": {"type": "string", "description": "reply message", "format": "string"}, "msg": {"type": "string", "description": "reply message", "format": "string"}, "token": {"type": "string", "description": "reply message", "format": "string"}, "name": {"type": "string", "description": "reply message", "format": "string"}}}}, "swagger": "2.0"};
+  // Build a system
+  const ui = SwaggerUIBundle({
+    spec: spec,
+    dom_id: '#swagger-ui',
+    deepLinking: true,
+    presets: [
+      SwaggerUIBundle.presets.apis,
+      SwaggerUIStandalonePreset
+    ],
+    plugins: [
+      SwaggerUIBundle.plugins.DownloadUrl
+    ],
+    layout: "StandaloneLayout"
+  })
+  window.ui = ui
+}
+</script>
+</body>
+</html>

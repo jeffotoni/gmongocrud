@@ -1,0 +1,252 @@
+swagger: '2.0'
+info:
+  description: >-
+    Avaliacao, descricao colocar aqui
+  version: 0.0.1
+  title: Avaliacao - The API
+  termsOfService: 'http://avaliacao.com/'
+  contact:
+    email: jeff.otoni@s3wf.com.br
+host: api.avaliacao.com
+basePath: /v1
+tags:
+  - name: public
+    description: Metodo para gerar Token
+  - name: user/token
+    description: Metodo responsavel por retornar token para que possa utilizar os seus endpoints.
+  - name: curriculum
+    description: Metodo responsável por cadastrar seu curriculo, listar e atualizar
+schemes:
+  - http
+  - https
+paths:
+  /public/ping:
+    post:
+      tags:
+        - public
+      summary: 'The method is public and open does not need authentication, to know if the service is online'
+      description: 'curl -X POST api.avaliacao.com/v1/public/ping'
+      produces:
+        - text/plain
+      responses:
+        '200':
+          description: pong
+          schema:
+            type: string
+            items:
+              $ref: '#/definitions/public'
+        '404':
+          $ref: '#/responses/Standard404ErrorResponse'
+        '500':
+          $ref: '#/responses/Standard500ErrorResponse'
+  /user:
+    post:
+      tags:
+        - token
+      summary: Solicitando Token JWT para acessar os metodos
+      description: 'curl -X POST api.avaliacao.com/v1/user/token -H "Content-Type: application/json" -H "X-Key: {xxx}" -d user=avaliacao'
+      produces:
+        - application/json
+      parameters:
+        - name: 'X-Key'
+          in: header
+          description: access key to public api
+          required: true
+          type: string
+          format:  string
+        - name: 'user'
+          in: query
+          description: name user
+          required: true
+          type: string
+          format:  string
+      responses:
+        '200':
+          description: '{"status":"ok","msg":"success","name":"avaliacao","token":"xxxxxxxxx", "expires":"14009-09-14"}'
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/User'
+        '401':
+          $ref: '#/responses/Standard401ErrorResponse'
+        '500':
+          $ref: '#/responses/Standard500ErrorResponse'
+  /curriculum:
+    post:
+      tags:
+        - curriculum
+      summary: 'O endpoint é responsável por criar seu curriculo, recebe um formulario no formato application/json ou multipart/form-data onde poderá enviar pdf do seu curriculo'
+      description: 'curl -X POST api.avaliacao.com/v1/curriculum -H "Authorization: Bearer {token}" --form "nome=seunome" --form "cpf=xx.xxx.xxx-xx" --form "file=@curriculo.pdf"'
+      produces:
+        - multipart/form-data
+      parameters:
+        - name: 'Authorization: Bearer {tokem}'
+          in: header
+          description: 'Header Authorization: Bearer'
+          required: true
+          type: string
+          format: string
+        - name: 'nome'
+          in: query
+          description: 'nome candidato'
+          required: true
+          type: string
+          format:  string  
+        - name: 'cpf'
+          in: query
+          description: 'cpf candidato'
+          required: true
+          type: string
+          format:  string
+        - name: 'rg'
+          in: query
+          description: 'rg candidato'
+          required: true
+          type: string
+          format: string
+        - name: 'idade'
+          in: query
+          description: 'Idade candidato'
+          required: true
+          type: string
+          format:  date
+        - name: 'bio'
+          in: query
+          description: 'Bio candidato'
+          required: true
+          type: string
+          format:  string
+        - name: 'skill'
+          in: query
+          description: 'Skill candidato'
+          required: true
+          type: string
+          format:  string  
+        - name: 'file'
+          in: query
+          description: 'field of input form data'
+          required: true
+          type: string
+          format: binary
+      responses:
+        '200':
+          description: '{"status":"ok","msg":"curriculo cadastrado com sucesso.", "id":"uuid"}'
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Curriculum'
+        '401':
+          $ref: '#/responses/Standard401ErrorResponse'
+        '500':
+          $ref: '#/responses/Standard500ErrorResponse'
+  /curriculum/:id:
+    get:
+      tags:
+        - curriculum
+      summary: Listando os dados de seu curriculo.
+      description: 'curl -X GET avaliacao.com/v1/curriculum/24ccc9e3-1a88-4955-9b5f-67167a76e159 -H "Authorization: Bearer {token}'
+      produces:
+        - application/json
+      parameters:
+        - name: 'Authorization: Bearer {tokem}'
+          in: header
+          description: 'Header Authorization: Bearer'
+          required: true
+          type: string
+          format: string
+        - name: 'id'
+          in: query
+          description: 'Uuid do candidato'
+          required: true
+          type: string
+          format: string
+      responses:
+        '200':
+          description: success
+          schema:
+            type: string
+            items:
+              $ref: '#/definitions/Curriculum'
+        '401':
+          $ref: '#/responses/Standard401ErrorResponse'
+        '500':
+          $ref: '#/responses/Standard500ErrorResponse'
+  /curriculum/id:
+    put:
+      tags:
+        - curriculum
+      summary: Atualizando seu curriculo.
+      description: 'curl -X GET avaliacao.com/v1/curriculum/24ccc9e3-1a88-4955-9b5f-67167a76e159 -H "Authorization: Bearer {token} -d @curriculums-update.json'
+      produces:
+        - application/json
+      parameters:
+        - name: 'Authorization: Bearer {tokem}'
+          in: header
+          description: 'Header Authorization: Bearer'
+          required: true
+          type: string
+          format: string
+        - name: 'id'
+          in: query
+          description: 'Uuid do candidato'
+          required: true
+          type: string
+          format: string
+      responses:
+        '200':
+          description: success
+          schema:
+            type: string
+            items:
+              $ref: '#/definitions/Curriculum'
+        '401':
+          $ref: '#/responses/Standard401ErrorResponse'
+        '500':
+          $ref: '#/responses/Standard500ErrorResponse'
+definitions:
+  public:
+    type: object
+    properties:
+      msg:
+        type: string
+  User:
+    type: object
+    properties:
+      status:
+        type: string
+        format: string
+        description: reply message
+      msg:
+        type: string
+        format: string
+        description: reply message
+      name:
+        type: string
+        format: string
+        description: reply message
+      token:
+        type: string
+        format: string
+        description: reply message
+  Curriculum:
+    type: object
+    properties:
+      status:
+        type: string
+        format: string
+        description: reply message
+      msg:
+        type: string
+        format: string
+        description: reply message
+      name:
+        type: string
+        format: string
+        description: reply message
+responses:
+  Standard404ErrorResponse: 
+    description: Not found
+  Standard500ErrorResponse:
+    description: Error of server
+  Standard401ErrorResponse:
+    description: 'Access Token invalid.'
