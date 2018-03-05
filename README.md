@@ -98,7 +98,7 @@ There is another possibility, which is of the pull in a complete image
 
 ```sh
 
-$ sudo docker pull jeffotoni/gmongocrud:latest
+$ sudo docker pull jeffotoni/gmongocrudslim:latest
 
 ```
 
@@ -106,7 +106,7 @@ $ sudo docker pull jeffotoni/gmongocrud:latest
 
 ```sh
 
-$ sudo docker run -e mongo_uri='mongodb://192.168.0.13:27017' -it --rm --name gmongocrud -p 8181:8181 -v /tmp/upload:/go/upload  jeffotoni/gmongocrud:latest
+$ sudo docker run -e mongo_uri='mongodb://192.168.0.13:27017' -it --rm --name gmongocrud -p 8181:8181 -v /tmp/upload:/go/upload  jeffotoni/gmongocrudslim:latest
 
 ```
 
