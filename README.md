@@ -23,6 +23,8 @@ $ show collections
 
 ### Install Dependencies
 
+```
+
 $ go get github.com/satori/go.uuid
 
 $ go get gopkg.in/macaron.v1
@@ -75,6 +77,73 @@ go run main.go
 go build main.go
 
 ./main
+
+```
+
+# Docker
+
+docker [Installing] (Docker https://docs.docker.com/engine/installation)
+
+# Pull in the image
+
+There is another possibility, which is of the pull in a complete image
+
+```sh
+
+$ sudo docker pull jeffotoni/gmongocrud:latest
+
+```
+
+# Start image and creating container
+
+```sh
+
+$ sudo docker run -e mongo_uri='mongodb://192.168.0.13:27017' -it --rm --name gmongocrud -p 8181:8181 -v /tmp/upload:/go/upload  jeffotoni/gmongocrud:latest
+
+```
+
+# Reverse proxy nginx
+
+```
+
+server {
+
+    listen 80;
+    server_name avaliacao.com;
+    return 301 https://$host$request_uri;
+}
+
+server {
+
+	listen 443;
+	server_name avaliacao.com;
+
+	ssl_certificate          /etc/nginx/ssl/avaiacao/2017/avaliacao.crt;
+	ssl_certificate_key      /etc/nginx/ssl/avaliacao/2017/avaliacao.key;
+
+	ssl on;
+	ssl_session_cache  builtin:1000  shared:SSL:10m;
+	ssl_protocols  TLSv1 TLSv1.1 TLSv1.2;
+	ssl_ciphers HIGH:!aNULL:!eNULL:!EXPORT:!CAMELLIA:!DES:!MD5:!PSK:!RC4;
+	ssl_prefer_server_ciphers on;
+
+	access_log /var/log/nginx/avaliacao-acesso.log;
+	error_log /var/log/nginx/avaliacao-acesso-error.log;
+
+	location / {
+
+	  proxy_set_header        Host $host;
+	  proxy_set_header        X-Real-IP $remote_addr;
+	  proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+	  proxy_set_header        X-Forwarded-Proto $scheme;
+
+	  # Fix the “It appears that your reverse proxy set up is broken" error.
+	  proxy_pass          http://localhost:8181;
+
+	  proxy_read_timeout  90;
+
+	}
+}
 
 ```
 

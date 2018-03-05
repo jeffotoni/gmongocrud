@@ -142,14 +142,14 @@ func CurriculumCreate(ctx *context.Context) {
 				// path upload
 				pathUpload := "/" + conf.PATH_UPLOAD + "/" + Uuid
 
-				pathNewOrg := GetWdLocal(1)
+				pathNewOrg := repo.GetWdLocal(0)
 
 				pathAbs := pathNewOrg + pathUpload
 
 				log.Println("upload:", pathAbs)
 
 				// salvando arquivo em disco
-				ctx.SaveToFile(conf.NAME_FORM_FILE, pathUpload)
+				ctx.SaveToFile(conf.NAME_FORM_FILE, pathAbs)
 
 				// sucesso
 				msgJson = `{"status":"ok","msg":"seus dados foram cadastrados com sucesso!", "uuid":"` + Uuid + `"}`

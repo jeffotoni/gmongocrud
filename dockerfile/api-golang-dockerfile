@@ -10,7 +10,7 @@ RUN mkdir -p /go/src/github.com/jeffotoni/gmongocrud
 
 RUN mkdir -p /go/bin
 
-RUN mkdir -p /go/bin/upload
+RUN mkdir -p /go/upload
 
 ADD gmongocrud /go/src/github.com/jeffotoni/gmongocrud
 
