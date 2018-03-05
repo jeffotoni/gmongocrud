@@ -4,15 +4,42 @@ MAINTAINER Jefferson Otoni Lima <jeff.otoni@gmail.com>
 
 LABEL Description="This image is used to start the project avaliacao.com, Developed in golang" Vendor="Avaliacao" Version="1.0"
 
-RUN mkdir -p /bin/upload
+RUN apk add --no-cache ca-certificates
 
-RUN mkdir -p /bin/docapi
+RUN apk --update add git openssh && \
+    rm -rf /var/lib/apt/lists/* && \
+    rm /var/cache/apk/*
 
-ADD ocapi /bin/docapi
-ADD gmongocrud /bin/
+RUN set -eux; \
+	apk add --no-cache --virtual .build-deps \
+		bash \
+		gcc \
+		musl-dev \
+		openssl
 
-WORKDIR /bin
+RUN mkdir -p /go/bin
 
-ENTRYPOINT /bin/gmongocrud
+RUN mkdir -p /go/bin/upload
 
-EXPOSE 8181
+RUN mkdir -p /go/bin/docapi
+
+ADD docapi /go/bin/docapi
+
+ADD gmongocrud /go/bin/gmongocrud
+
+RUN  chmod 755 /go/bin/gmongocrud
+
+RUN ls -lh /go/*
+
+RUN export PATH="/usr/local/go/bin:$PATH"
+
+ENV GOPATH /go
+
+ENV PATH $GOPATH/bin:/usr/local/go/bin:$PATH
+
+RUN mkdir -p "$GOPATH/src" "$GOPATH/bin" && chmod -R 777 "$GOPATH"
+
+WORKDIR $GOPATH
+
+#ENTRYPOINT gmongocrud
+#EXPOSE 8181
