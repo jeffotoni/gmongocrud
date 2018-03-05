@@ -254,7 +254,7 @@ curl -v -X POST localhost:8181/v1/user/token \
 {
 	"status":"o",
 	"msg":"success",
-	"token":"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiamVmZi5vdG9uaSIsInVpZCI6IjEyMzQ1NjkzOSIsInVpZHdrcyI6IjM4MzgzODM4MzM4ODMiLCJleHAiOjE1MjEwNDg4NTMsImlzcyI6Imp3dCBwcm9qZWN0In0.wo9fJ0CxBfDlZkwrJql8_3Vjzup1xJhDwYaGxTQbmyug80HPO8uRkvng8ZUKG95hL-ldZCYOe_sdkz2wb7wGcM-8mzFJpRqqgcJeyHBIjSDd4xHQPDyzKF4wZwQ7EgR6C_pUSmnvYRHOcT-FEK8gnqydl8BK0ZvcwWg3zYO7rc8",
+	"token":"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.......",
 	"expires":"14009-09-14"
 }
 
