@@ -252,8 +252,10 @@ pong
 ```
 
 curl -v -X POST localhost:8181/v1/user/token \
+-H "Content-Type: application/json" \
 -H "X-Key: NWUzOWU3MzY3ZDU4OWRhOWYyY2U0ZGQ1OTRhY2UyNTU=" \
--d "user=avaliacao"
+-d '{"use":"avaliacao", "password":"1234"}'
+
 ```
 
 # Resposta
