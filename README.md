@@ -3,7 +3,7 @@
 * Responda para o endereço avaliacao.com. ( local )
 * Esse site deve responder em HTTPS e se chamado em HTTP, ser redirecionado para HTTPS. ( nativo e com nginx)
 * A funcionalidade do sistema deve ser uma API para cadastrar e consultar os dados do seu currículo. (insert e listar)
-* As ações com a API deve ser feita de forma autenticada. (JWT, usando login e senha ou uma chave)
+* As ações com a API deve ser feita de forma autenticada. (JWT, usando user somente para gerar a chave)
 * Você deve incluir a configuração para criar um servidor virtual local, que irá atender essa API. (ok local)
 * um pequeno doc da aplicação
 * Utilize uma imagem padrão, só com o sistema operacional do tipo Linux, que deve ser baixada no momento de configuração. (como deseja fazer isto ((colocar a api em um container docker)
@@ -95,9 +95,9 @@ Application entry
 
 - POST /v1/public/ping - Test API Rest
 
-# Login User
+# Token User
 
-- POST /v1/user/login - Logar 
+- POST /v1/user/token - Logar 
 
 # Data Base using Mongo
 
@@ -126,15 +126,13 @@ pong
 
 ```
 
-### Example Curl - POST /v1/user/login
+### Example Curl - POST /v1/user/token
 
 ```
 
-curl -v -X POST localhost:8181/v1/user/login \
+curl -v -X POST localhost:8181/v1/user/token \
 -H "X-Key: NWUzOWU3MzY3ZDU4OWRhOWYyY2U0ZGQ1OTRhY2UyNTU=" \
--d "user=email@server.com" \
--d "password=1234"
-
+-d "user=avaliacao"
 ```
 
 # Resposta
