@@ -97,7 +97,8 @@ func SetupRoutes(app *macaron.Macaron) {
 
 		app.Group("/user", func() {
 
-			app.Post("/login", handler.Login)
+			// gerar token
+			app.Post("/token", handler.Login)
 
 			// app.Post("/login", func() string {
 			// 	return "login ok."

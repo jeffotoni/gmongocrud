@@ -1,31 +1,31 @@
 swagger: '2.0'
 info:
   description: >-
-    avaliacao, xxxxxxxx.
+    Avaliacao, descricao colocar aqui
   version: 0.0.1
-  title: avaliacao - The API
+  title: Avaliacao - The API
   termsOfService: 'http://avaliacao.com/'
   contact:
     email: jeff.otoni@s3wf.com.br
 host: api.avaliacao.com
 basePath: /v1
 tags:
-  - name: test
-    description: Methods to test api
-  - name: user
-    description: Methods for accessing user accounts
-  - name: file
-    description: Methods to make your uploads and downloads
+  - name: public
+    description: Metodo para gerar Token
+  - name: user/token
+    description: Metodo responsavel por retornar token para que possa utilizar os seus endpoints.
+  - name: curriculum
+    description: Metodo responsável por cadastrar seu curriculo, listar e atualizar
 schemes:
   - http
   - https
 paths:
-  /test/ping:
+  /public/ping:
     post:
       tags:
-        - test
+        - public
       summary: 'The method is public and open does not need authentication, to know if the service is online'
-      description: 'curl -X POST api.avaliacao.com/v1/test/ping'
+      description: 'curl -X POST api.avaliacao.com/v1/public/ping'
       produces:
         - text/plain
       responses:
@@ -34,44 +34,17 @@ paths:
           schema:
             type: string
             items:
-              $ref: '#/definitions/Test'
+              $ref: '#/definitions/public'
         '404':
           $ref: '#/responses/Standard404ErrorResponse'
-        '500':
-          $ref: '#/responses/Standard500ErrorResponse'
-
-  /test/hello:
-    post:
-      tags:
-        - test
-      summary: The Hello method is a handler to test your token, it will receive the token as a parameter, if the token is correct it will return a hello, otherwise it will return an error.
-      description: 'curl -X POST api.avaliacao.com/v1/test/hello -H "Authorization: Bearer {token}"'
-      produces:
-        - application/json
-      parameters:
-        - name: 'Authorization: Bearer'
-          in: header
-          description: 'Authorization: Bearer {token}'
-          required: true
-          type: string
-          format: string
-      responses:
-        '200':
-          description: '{"status":"ok","msg":"Hello, welcome."}'
-          schema:
-            type: array
-            items:
-              $ref: '#/definitions/TestHello'
-        '401':
-          $ref: '#/responses/Standard401ErrorResponse'
         '500':
           $ref: '#/responses/Standard500ErrorResponse'
   /user:
     post:
       tags:
-        - user
-      summary: Creating a new user
-      description: 'curl -X POST api.avaliacao.com/v1/user -H "Content-Type: application/json" -H "X-Key: {xxx}" -d @example/createuser.json'
+        - token
+      summary: Solicitando Token JWT para acessar os metodos
+      description: 'curl -X POST api.avaliacao.com/v1/user/token -H "Content-Type: application/json" -H "X-Key: {xxx}" -d user=avaliacao'
       produces:
         - application/json
       parameters:
@@ -81,51 +54,15 @@ paths:
           required: true
           type: string
           format:  string
-        - name: 'name'
+        - name: 'user'
           in: query
           description: name user
           required: true
           type: string
           format:  string
-        - name: 'lastname'
-          in: query
-          description: last name user
-          required: true
-          type: string
-          format:  string
-        - name: 'email'
-          in: query
-          description: email user
-          required: true
-          type: string
-          format:  string  
-        - name: 'password'
-          in: query
-          description: password user
-          required: true
-          type: string
-          format:  string
-        - name: 'country'
-          in: query
-          description: country user
-          required: true
-          type: string
-          format:  string
-        - name: 'birth'
-          in: query
-          description: birth user
-          required: true
-          type: string
-          format:  string
-        - name: 'contract'
-          in: query
-          description: contract user
-          required: true
-          type: string
-          format:  string  
       responses:
         '200':
-          description: '{"status":"success","msg":"ok","name":"jefferson","email":"emailuser@gmail.com"}'
+          description: '{"status":"ok","msg":"success","name":"avaliacao","token":"xxxxxxxxx", "expires":"14009-09-14"}'
           schema:
             type: array
             items:
@@ -134,149 +71,12 @@ paths:
           $ref: '#/responses/Standard401ErrorResponse'
         '500':
           $ref: '#/responses/Standard500ErrorResponse'
-  /user/confirm_email:
+  /curriculum:
     post:
       tags:
-        - user
-      summary: 'The email confirmation is date by the browser'
-      description: 'The email confirmation is date by the browser and an html is opened for the user on the screen'
-      produces:
-        - application/json
-      responses:
-        '200':
-          description: 'opens in the browser the confirmation of the email with success or error.'
-          schema:
-            $ref: '#/definitions/UserGeral'
-        '401':
-          $ref: '#/responses/Standard401ErrorResponse'
-        '500':
-          $ref: '#/responses/Standard500ErrorResponse'
-  /user/close_account:
-    post:
-      tags:
-        - user
-      summary: this method enables the complete removal of the user after 24 hours if the user does not manifest 
-      description: 'curl -X POST api.avaliacao.com/v1/user/close_account -H "Content-Type: application/json" -H "Authorization: Bearer {token}" -d {"email":"mail@mail.com","key":"keyUser"}'
-      produces: 
-        - application/json
-      parameters:
-        - name: 'Authorization: Bearer'
-          in: header
-          description: 'Authorization: Bearer {token}'
-          required: true
-          type: string
-          format: string
-        - name: 'email'
-          in: query
-          description: 'email to user'
-          required: true
-          type: string
-          format: string  
-        - name: 'key'
-          in: query
-          description: 'key to user'
-          required: true
-          type: string
-          format: string
-      responses:
-        '200':
-          description: '{"status":"success","msg":"ok"}'
-          schema:
-            type: array
-            items:
-             $ref: '#/definitions/UserGeral'
-        '401':
-          $ref: '#/responses/Standard401ErrorResponse'
-        '500':
-          $ref: '#/responses/Standard500ErrorResponse'
-  /user/restore_account:
-    post:
-      tags:
-        - user
-      summary: This handler resets the user account, it updates the user account, but will only work if the account is within 24 hours of the account closure request
-      description: 'This handler schedules the user to be removed from the system'
-      produces: 
-        - application/json
-      parameters:
-        - name: 'm'
-          in: query
-          description: 'Would be encrypted email'
-          required: true
-          type: string
-          format: string
-        - name: 'a'
-          in: query
-          description: 'A single access key a constant will be authenticated by the GetXKeyUrl method'
-          required: true
-          type: string
-          format: string
-      responses:
-        '200':
-          description: 'Has been successfully restored!'
-          schema:
-            type: string
-        '401':
-          $ref: '#/responses/Standard401ErrorResponse'
-        '500':
-          $ref: '#/responses/Standard500ErrorResponse'
-  /user/disable:
-    put:
-      tags:
-        - user
-      summary: This handler only makes an update on the users status, disabling only.
-      description: 'curl -X PUT api.avaliacao.com/V1/user/disable -H "Authorization: Bearer {tokem}"-d "user=mail@mail.com"'
-      produces:
-        - application/json
-      parameters:
-        - name: 'Authorization: Bearer {tokem}'
-          in: header
-          description: 'Header Authorization: Bearer'
-          required: true
-          type: string
-          format: string
-      responses:
-        '200':
-          description: '{"status":"ok","msg":"Account disabled successfully!"}'
-          schema:
-            type: array
-            items:
-              $ref: '#/definitions/UserGeral'
-        '401':
-          $ref: '#/responses/Standard401ErrorResponse'
-        '500':
-          $ref: '#/responses/Standard500ErrorResponse'
-  /user/enable:
-    put:
-      tags:
-        - user
-      summary: This handler is responsible for reactivating the status of the user, so that he returns access to all available handlers and his account normally.
-      description: 'curl -X PUT api.avaliacao.com/V1/user/enable -H "Authorization: Bearer {tokem}"-d "user=mail@mail.com"'
-      produces:
-        - application/json
-      parameters:
-        - name: 'Authorization: Bearer {tokem}'
-          in: header
-          description: 'Header Authorization: Bearer'
-          required: true
-          type: string
-          format: string
-      responses:
-        '200':
-          description: '{"status":"ok","msg":"Account enabled with successfully!"}'
-          schema:
-            type: array
-            items:
-              $ref: '#/definitions/UserGeral'
-        '401':
-          $ref: '#/responses/Standard401ErrorResponse'
-        '500':
-          $ref: '#/responses/Standard500ErrorResponse'
-  /file/upload:
-    post:
-      tags:
-        - file
-      summary: 'The field name of the form is "file", for uploads. This handler will allow you to upload using the form for this.'
-      description: 'curl -X POST api.avaliacao.com/v1/file/upload -H "Authorization: Bearer {token}" --form "file=@namefile.pdf"'
+        - curriculum
+      summary: 'O endpoint é responsável por criar seu curriculo, recebe um formulario no formato application/json ou multipart/form-data onde poderá enviar pdf do seu curriculo'
+      description: 'curl -X POST api.avaliacao.com/v1/curriculum -H "Authorization: Bearer {token}" --form "nome=seunome" --form "cpf=xx.xxx.xxx-xx" --form "file=@curriculo.pdf"'
       produces:
         - multipart/form-data
       parameters:
@@ -286,6 +86,42 @@ paths:
           required: true
           type: string
           format: string
+        - name: 'nome'
+          in: query
+          description: 'nome candidato'
+          required: true
+          type: string
+          format:  string  
+        - name: 'cpf'
+          in: query
+          description: 'cpf candidato'
+          required: true
+          type: string
+          format:  string
+        - name: 'rg'
+          in: query
+          description: 'rg candidato'
+          required: true
+          type: string
+          format: string
+        - name: 'idade'
+          in: query
+          description: 'Idade candidato'
+          required: true
+          type: string
+          format:  date
+        - name: 'bio'
+          in: query
+          description: 'Bio candidato'
+          required: true
+          type: string
+          format:  string
+        - name: 'skill'
+          in: query
+          description: 'Skill candidato'
+          required: true
+          type: string
+          format:  string  
         - name: 'file'
           in: query
           description: 'field of input form data'
@@ -294,72 +130,21 @@ paths:
           format: binary
       responses:
         '200':
-          description: '{"status":"ok","msg":"upload your file successfully","size":"size file","name":"nameFile.ext","id":"uuid file"}'
+          description: '{"status":"ok","msg":"curriculo cadastrado com sucesso.", "id":"uuid"}'
           schema:
             type: array
             items:
-              $ref: '#/definitions/File'
+              $ref: '#/definitions/Curriculum'
         '401':
           $ref: '#/responses/Standard401ErrorResponse'
         '500':
           $ref: '#/responses/Standard500ErrorResponse'
-  /file:
-    delete:
-      tags:
-        - file
-      summary: 'This handler does a logical removal only, it sends the files to the trash.'
-      description: 'curl -X DELETE api.avaliacao.com/v1/file -H "Authorization: Bearer {token}" -F "id={uuid}" '
-      produces:
-        - application/json
-      parameters:
-        - name: 'Authorization: Bearer {tokem}'
-          in: header
-          description: 'Header Authorization: Bearer'
-          required: true
-          type: string
-          format: string
-        - name: 'id'
-          in: query
-          description: 'Uuid file of database'
-          required: true
-          type: string
-          format: string
-      responses:
-        '200':
-          description: '{"status":"ok","msg":"successfully removed definitely!"}'
-          schema:
-            type: array
-            items:
-              $ref: '#/definitions/File'
-        '401':
-          $ref: '#/responses/Standard401ErrorResponse'
-        '500':
-          $ref: '#/responses/Standard500ErrorResponse'
-  /file/remove_trash:
-    delete:
-      tags:
-        - file
-      summary: 'This handler does a physical removal, it deletes from the bucket and also the database reference.'
-      description: 'curl -X DELETE api.avaliacao.com/v1/file/remove_trash -H "Authorization: Bearer {token}" -F "id={uid}" '
-      produces:
-        - application/json
-      responses:
-        '200':
-          description: '{"status":"ok","msg":"successfully removed definitely!"}'
-          schema:
-            type: array
-            items:
-              $ref: '#/definitions/File'
-        '401':
-          $ref: '#/responses/Standard401ErrorResponse'
-        '500':
-          $ref: '#/responses/Standard500ErrorResponse'
-  /file/download:
+  /curriculum/:id:
     get:
       tags:
-        - file
-      summary: This handler is responsible for downloading the file that is on the server.
-      description: 'curl -X GET -o namefile.ext api.avaliacao.com/v1/file/download -H "Content-Type: application/json" -H "Authorization: Bearer {token}" -d {"id":"uidfile"}'
+        - curriculum
+      summary: Listando os dados de seu curriculo.
+      description: 'curl -X GET avaliacao.com/v1/curriculum/24ccc9e3-1a88-4955-9b5f-67167a76e159 -H "Authorization: Bearer {token}'
       produces:
         - application/json
       parameters:
@@ -371,7 +156,7 @@ paths:
           format: string
         - name: 'id'
           in: query
-          description: 'Uuid file of database'
+          description: 'Uuid do candidato'
           required: true
           type: string
           format: string
@@ -381,28 +166,49 @@ paths:
           schema:
             type: string
             items:
-              $ref: '#/definitions/File'
+              $ref: '#/definitions/Curriculum'
+        '401':
+          $ref: '#/responses/Standard401ErrorResponse'
+        '500':
+          $ref: '#/responses/Standard500ErrorResponse'
+  /curriculum/id:
+    put:
+      tags:
+        - curriculum
+      summary: Atualizando seu curriculo.
+      description: 'curl -X GET avaliacao.com/v1/curriculum/24ccc9e3-1a88-4955-9b5f-67167a76e159 -H "Authorization: Bearer {token} -d @curriculums-update.json'
+      produces:
+        - application/json
+      parameters:
+        - name: 'Authorization: Bearer {tokem}'
+          in: header
+          description: 'Header Authorization: Bearer'
+          required: true
+          type: string
+          format: string
+        - name: 'id'
+          in: query
+          description: 'Uuid do candidato'
+          required: true
+          type: string
+          format: string
+      responses:
+        '200':
+          description: success
+          schema:
+            type: string
+            items:
+              $ref: '#/definitions/Curriculum'
         '401':
           $ref: '#/responses/Standard401ErrorResponse'
         '500':
           $ref: '#/responses/Standard500ErrorResponse'
 definitions:
-  Test:
+  public:
     type: object
     properties:
       msg:
         type: string
-  TestHello:
-    type: object
-    properties:
-      status:
-        type: string
-        format: string
-        description: reply message
-      msg:
-        type: string
-        format: string
-        description: reply message 
   User:
     type: object
     properties:
@@ -418,22 +224,11 @@ definitions:
         type: string
         format: string
         description: reply message
-      email:
+      token:
         type: string
         format: string
         description: reply message
-  UserGeral:
-    type: object
-    properties:
-      status:
-        type: string
-        format: string
-        description: reply message
-      msg:
-        type: string
-        format: string
-        description: reply message
-  File:
+  Curriculum:
     type: object
     properties:
       status:
@@ -447,14 +242,6 @@ definitions:
       name:
         type: string
         format: string
-        description: reply message  
-      size:
-        type: string
-        format: string
-        description: reply message
-      id:
-        type: string
-        format: string
         description: reply message
 responses:
   Standard404ErrorResponse: 
@@ -462,7 +249,4 @@ responses:
   Standard500ErrorResponse:
     description: Error of server
   Standard401ErrorResponse:
-    description: Access Token invalid.
-externalDocs:
-  description: In order to get your keys you need to log into the system and go into profile, generate tokens.
-url: 'https://avaliacao.com'
+    description: 'Access Token invalid.'
