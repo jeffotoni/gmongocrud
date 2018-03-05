@@ -22,12 +22,16 @@ import (
 	"github.com/jeffotoni/gmongocrud/lib/cors"
 	"github.com/jeffotoni/gmongocrud/lib/gjwt"
 	"github.com/jeffotoni/gmongocrud/lib/template"
+	"github.com/jeffotoni/gmongocrud/repo"
 	"gopkg.in/macaron.v1"
 	"os"
 )
 
 //SetupMiddlewares configures the middlewares using in each web request
 func SetupMiddlewares(app *macaron.Macaron) {
+
+	pathNewOrg := repo.GetWdLocal(0)
+	pathAbs := pathNewOrg + "/docapi"
 	app.Use(macaron.Logger())
 	app.Use(macaron.Recovery())
 	app.Use(gzip.Gziper())
@@ -36,7 +40,7 @@ func SetupMiddlewares(app *macaron.Macaron) {
 			new(handler.AppChecker),
 		},
 	}))
-	app.Use(macaron.Static("docapi",
+	app.Use(macaron.Static(pathAbs,
 		macaron.StaticOptions{
 			// Prefix is the optional prefix used to serve the static directory content. Default is empty string.
 			Prefix: "docapi",

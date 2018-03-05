@@ -12,9 +12,11 @@ RUN mkdir -p /go/bin
 
 RUN mkdir -p /go/upload
 
+RUN mkdir -p /go/docapi
+
 ADD gmongocrud /go/src/github.com/jeffotoni/gmongocrud
 
-#RUN git clone https://github.com/jeffotoni/gmongocrud.git
+ADD gmongocrud/docapi /go/docapi
 
 RUN go version
 
