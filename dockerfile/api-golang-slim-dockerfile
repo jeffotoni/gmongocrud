@@ -1,0 +1,18 @@
+FROM alpine:3.7
+
+MAINTAINER Jefferson Otoni Lima <jeff.otoni@gmail.com>
+
+LABEL Description="This image is used to start the project avaliacao.com, Developed in golang" Vendor="Avaliacao" Version="1.0"
+
+RUN mkdir -p /bin/upload
+
+RUN mkdir -p /bin/docapi
+
+ADD ocapi /bin/docapi
+ADD gmongocrud /bin/
+
+WORKDIR /bin
+
+ENTRYPOINT /bin/gmongocrud
+
+EXPOSE 8181
