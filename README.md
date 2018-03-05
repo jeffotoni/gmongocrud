@@ -80,6 +80,14 @@ go build main.go
 
 ```
 
+### Static linking
+
+```
+
+CGO_ENABLED=0 go build -a -installsuffix cgo main.go
+
+```
+
 # Docker
 
 docker [Installing] (Docker https://docs.docker.com/engine/installation)
