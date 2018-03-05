@@ -24,7 +24,6 @@ import (
 	"github.com/jeffotoni/gmongocrud/lib/template"
 	"github.com/jeffotoni/gmongocrud/repo"
 	"gopkg.in/macaron.v1"
-	"log"
 	"os"
 )
 
