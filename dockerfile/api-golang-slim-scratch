@@ -1,0 +1,10 @@
+FROM golang as builder
+ENV GOPATH /go
+WORKDIR /go/src/app
+ADD . ./
+RUN go get && go build
+
+FROM scratch
+# Copiando o executável compilado na primeira imagem
+COPY --from=builder /go/src/app/app /
+CMD ["/app"]
